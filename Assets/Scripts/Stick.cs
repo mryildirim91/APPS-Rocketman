@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Stick : MonoBehaviour
 {
-    private bool _launched;
     private Animator _animator;
     private static readonly int Release = Animator.StringToHash("Release");
     
@@ -20,7 +19,7 @@ public class Stick : MonoBehaviour
 
     private void LaunchRocketman()
     {
-        if(_launched) return;
+        if(Rocketman.IsLaunched) return;
         
         if (Input.GetMouseButtonDown(0))
         {
@@ -35,7 +34,6 @@ public class Stick : MonoBehaviour
         
         if (Input.GetMouseButtonUp(0))
         {
-            _launched = true;
             _animator.SetTrigger(Release);
         }
     }
