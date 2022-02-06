@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Mryildirim.Core
@@ -7,11 +8,29 @@ namespace Mryildirim.Core
         private Animator _animator;
         private static readonly int Open = Animator.StringToHash("Open");
         private static readonly int Close = Animator.StringToHash("Close");
-
+        private static readonly int Idle = Animator.StringToHash("Idle");
 
         private void Awake()
         {
             _animator = GetComponent<Animator>();
+        }
+
+        private void OnEnable()
+        {
+            EventManager.OnRocketmanJumped += () =>
+            {
+                if(_animator != null)
+                    _animator.SetTrigger(Idle);
+            };
+        }
+
+        private void OnDisable()
+        {
+            EventManager.OnRocketmanJumped -= () =>
+            {
+                if(_animator != null)
+                    _animator.SetTrigger(Idle);
+            };
         }
 
         private void Update()
@@ -23,16 +42,13 @@ namespace Mryildirim.Core
         private void PlayAnimation()
         {
             if(!Rocketman.IsLaunched && !Rocketman.IsFloating) return;
-        
+            if(Rocketman.HasJumped) return;
+
             if (Input.GetMouseButtonDown(0))
-            {
                 _animator.SetTrigger(Open);
-            }
-        
+
             if (Input.GetMouseButtonUp(0))
-            {
                 _animator.SetTrigger(Close);
-            }
         }
     }
 }
