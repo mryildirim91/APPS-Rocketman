@@ -1,25 +1,24 @@
+using System;
+using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 namespace Mryildirim.Core
 { 
     public class Rocketman : MonoBehaviour
     {
-        [SerializeField] private float _force, _speed, _steerLimit;
+        [SerializeField] private float _launchForce, _rotateForce, _steerForce,_speed;
         [SerializeField] private Stick _stick;
         private Rigidbody _rigidbody;
-        private Camera _camera;
-        private Vector3 _startPosition;
         public static bool IsLaunched { get; private set; }
         public static bool IsFloating { get; private set; }
     
         private void Awake()
         {
-            _rigidbody = GetComponent<Rigidbody>(); 
-            _camera = Camera.main;
+            _rigidbody = GetComponent<Rigidbody>();
         }
 
         private void OnEnable()
-    
         {
             EventManager.OnRocketmanLaunched += Launch;
         }
@@ -32,11 +31,16 @@ namespace Mryildirim.Core
         private void Update()
         {
             if(GameManager.Instance.IsGameOver) return;
-
+            
             Float();
+        }
 
-            if (IsFloating)
-                Steer();
+        private void FixedUpdate()
+        {
+            if(GameManager.Instance.IsGameOver) return;
+            
+            RotateAround();
+            Steer();
         }
 
         private void OnCollisionEnter(Collision other)
@@ -53,7 +57,7 @@ namespace Mryildirim.Core
                 transform.SetParent(null);
 
             _rigidbody.isKinematic = false;
-            var direction = new Vector3(0, 1, 0.5f) * _force * _stick.Force;
+            var direction = new Vector3(0, 0.7f, 1f) * _launchForce * _stick.Force;
             _rigidbody.AddForce(direction, ForceMode.Impulse);
         }
 
@@ -64,40 +68,42 @@ namespace Mryildirim.Core
             if (Input.GetMouseButtonDown(0))
             {
                 IsFloating = true;
-                _startPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
-                _rigidbody.mass = 1;
+                _rigidbody.DORotate(Vector3.right * 90, 0.5f);
             }
 
             if (Input.GetMouseButtonUp(0))
             {
                 IsFloating = false;
-                _rigidbody.mass *= 5;
+            }
+        }
+        private void RotateAround()
+        {
+            if (!IsFloating && IsLaunched)
+            {
+                var deltaRotation = Quaternion.Euler(transform.right * Time.fixedDeltaTime * _rotateForce);
+                _rigidbody.MoveRotation(_rigidbody.rotation * deltaRotation);
             }
         }
 
+        private Touch _touch;
+        private Vector3 _touchPosition;
+        private Quaternion _yRotation;
+         
         private void Steer()
         {
-            transform.Translate(transform.forward * Time.deltaTime * _speed);
-
-            /*if (Input.GetMouseButton(0))
+            if (!IsFloating) return;
+            
+            if (Input.touchCount > 0)
             {
-                var endPosition = _camera.ScreenToWorldPoint(Input.mousePosition);
-                var xPosition = _startPosition.x - endPosition.x;
-                var direction = 0;
-                
-                if (xPosition < 0)
+                _touch = Input.GetTouch(0);
+
+                if (_touch.phase == TouchPhase.Moved)
                 {
-                    direction = -1;
+                    _yRotation = Quaternion.Euler(Vector3.down * _touch.deltaPosition.x * _steerForce * Time.fixedDeltaTime);
+                    _rigidbody.MoveRotation(_rigidbody.rotation * _yRotation);
+                    _rigidbody.velocity += Vector3.right * Time.fixedDeltaTime * _speed * _touch.deltaPosition.x;
                 }
-                else
-                {
-                    direction = 1;
-                }
-    
-                var rotation = Vector3.up * _steerLimit * Time.deltaTime * direction;
-                
-                transform.DORotate(rotation, 1);
-            }*/
+            }
         }
     } 
 }
