@@ -1,4 +1,3 @@
-using Mryildirim.Utilities;
 using UnityEngine;
 
 namespace Mryildirim.Core
@@ -7,6 +6,8 @@ namespace Mryildirim.Core
     {
         [SerializeField] private int _numberOfPlatforms;
         [SerializeField] private GameObject _rectanglePlatform, _cylinderPlatform;
+
+        public int NumberOfPlatform => _numberOfPlatforms;
 
         private void Start()
         {
@@ -17,20 +18,18 @@ namespace Mryildirim.Core
         {
             for (int i = 0; i < _numberOfPlatforms; i++)
             {
-                var randomNumber = Random.Range(1, 11);
-                var platform = ObjectPool.Instance.GetObject(randomNumber < 4 ? _cylinderPlatform : _rectanglePlatform);
+                float randomNumber = Random.Range(1, 10);
+                var platform = Instantiate(randomNumber < 5 ? _cylinderPlatform : _rectanglePlatform, transform, true);
                 platform.transform.position = GetPlatformLocation(i);
-                platform.transform.SetParent(transform);
             }
         }
 
         private Vector3 GetPlatformLocation(int z)
         {
-            float xRange = Random.Range(-50, 50);
-            float yRange = Random.Range(-20, -17);
-            float zRange = Random.Range(35, 50);
+            float xRange = Random.Range(-60, 60);
+            float yRange = Random.Range(5, 20);
 
-            var location = new Vector3(xRange, yRange, z*zRange + zRange);
+            var location = new Vector3(xRange, yRange, z * 45 + 45);
             return location;
         }
     }

@@ -1,4 +1,6 @@
+using Mryildirim.UI;
 using Mryildirim.Utilities;
+using UnityEngine.SceneManagement;
 
 namespace Mryildirim.Core
 {
@@ -9,6 +11,12 @@ namespace Mryildirim.Core
         public void GameOver()
         {
             IsGameOver = true;
+            UIManager.Instance.OpenGameOverPanel();
+        }
+
+        public void RestartGame()
+        {
+            SceneManager.LoadSceneAsync(0);
         }
     }
 }
