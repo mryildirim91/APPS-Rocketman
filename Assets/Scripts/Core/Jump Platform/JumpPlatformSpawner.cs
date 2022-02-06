@@ -1,7 +1,5 @@
-using System;
 using Mryildirim.Utilities;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 namespace Mryildirim.Core
 {
@@ -29,7 +27,7 @@ namespace Mryildirim.Core
         private Vector3 GetPlatformLocation(int z)
         {
             float xRange = Random.Range(-50, 50);
-            float yRange = Random.Range(-10, -15);
+            float yRange = Random.Range(-20, -17);
             float zRange = Random.Range(35, 50);
 
             var location = new Vector3(xRange, yRange, z*zRange + zRange);
