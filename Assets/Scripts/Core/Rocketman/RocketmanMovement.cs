@@ -5,14 +5,12 @@ using UnityEngine;
 
 namespace Mryildirim.Core
 { 
-    public class Rocketman : MonoBehaviour
+    public class RocketmanMovement : MonoBehaviour
     {
-        [SerializeField] private float _launchForce, _rotateForce, _steerForce,_speed;
+        [SerializeField] private float _launchForce, _rotateForce, _steerForce, _dropForce;
         [SerializeField] private Stick _stick;
         private Rigidbody _rigidbody;
-        private Touch _touch;
-        private Vector3 _touchPosition;
-        private Quaternion _yRotation;
+        
         public static bool IsLaunched { get; private set; }
         public static bool IsFloating { get; private set; }
         public static bool HasJumped { get; private set; }
@@ -42,11 +40,11 @@ namespace Mryildirim.Core
         {
             if(GameManager.Instance.IsGameOver) return;
             
-            Float();
-
             if (IsLaunched && transform.position.z > 0)
                 ScoreManager.SetScore((int)transform.position.z);
-
+            
+            Float();
+            Drop();
         }
 
         private void FixedUpdate()
@@ -55,7 +53,6 @@ namespace Mryildirim.Core
             
             RotateAround();
             Steer();
-
         }
 
         private void OnCollisionEnter(Collision other)
@@ -73,7 +70,7 @@ namespace Mryildirim.Core
         {
             HasJumped = true;
             IsFloating = false;
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(2f);
             HasJumped = false;
         }
         
@@ -85,6 +82,7 @@ namespace Mryildirim.Core
                 transform.SetParent(null);
 
             _rigidbody.isKinematic = false;
+            _rigidbody.collisionDetectionMode = CollisionDetectionMode.Continuous;
             var direction = new Vector3(0, 0.7f, 1f) * _launchForce * _stick.Force;
             _rigidbody.AddForce(direction, ForceMode.Impulse);
         }
@@ -110,18 +108,31 @@ namespace Mryildirim.Core
             }
         }
         
+        private Touch _touch;
+        private Vector3 _touchPosition;
+        
         private void Steer()
         {
             if (!IsFloating) return;
 
             if (Input.touchCount <= 0) return;
             _touch = Input.GetTouch(0);
-
-            if (_touch.phase != TouchPhase.Moved) return;
             
-            _yRotation = Quaternion.Euler(Vector3.down * _touch.deltaPosition.x * _steerForce * Time.fixedDeltaTime);
-            _rigidbody.MoveRotation(_rigidbody.rotation * _yRotation);
-            _rigidbody.velocity += Vector3.right * Time.fixedDeltaTime * _speed * _touch.deltaPosition.x;
+            if (_touch.phase != TouchPhase.Moved) return;
+
+            var force = _steerForce * Time.fixedDeltaTime * _touch.deltaPosition.x;
+            var yRotation = Quaternion.Euler(Vector3.down * force);
+            _rigidbody.MoveRotation(_rigidbody.rotation * yRotation);
+            _rigidbody.velocity += Vector3.right * force;
+        }
+
+        private void Drop()
+        {
+            if (Input.GetMouseButtonUp(0) && !HasJumped && IsLaunched)
+            {
+                var direction = new Vector3(0,-1,0.1f) * _dropForce;
+                _rigidbody.AddForce(direction, ForceMode.Impulse);
+            }
         }
     } 
 }

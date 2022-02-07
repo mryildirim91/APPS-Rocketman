@@ -21,7 +21,7 @@ namespace Mryildirim.Core
 
         private void LaunchRocketman()
         {
-            if(Rocketman.IsLaunched) return;
+            if(RocketmanMovement.IsLaunched) return;
         
             if (Input.GetMouseButtonDown(0))
             {

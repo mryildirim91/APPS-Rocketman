@@ -41,8 +41,8 @@ namespace Mryildirim.Core
 
         private void PlayAnimation()
         {
-            if(!Rocketman.IsLaunched && !Rocketman.IsFloating) return;
-            if(Rocketman.HasJumped) return;
+            if(!RocketmanMovement.IsLaunched && !RocketmanMovement.IsFloating) return;
+            if(RocketmanMovement.HasJumped) return;
 
             if (Input.GetMouseButtonDown(0))
                 _animator.SetTrigger(Open);
