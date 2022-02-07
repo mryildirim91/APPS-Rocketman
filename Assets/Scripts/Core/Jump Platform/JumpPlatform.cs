@@ -3,16 +3,16 @@ using UnityEngine;
 
 namespace Mryildirim.Core
 {
-    public abstract class JumpPlatform : MonoBehaviour
+    public class JumpPlatform : MonoBehaviour
     {
-        private Rocketman _rocketman;
+        private RocketmanMovement _rocketmanMovement;
         private JumpPlatformSpawner _platformSpawner;
-        [SerializeField] protected JumpPlatformData _platformData;
+        [SerializeField] private JumpPlatformData _platformData;
 
         private MeshRenderer _meshRenderer;
         private void Awake()
         {
-            _rocketman = FindObjectOfType<Rocketman>();
+            _rocketmanMovement = FindObjectOfType<RocketmanMovement>();
             _platformSpawner = FindObjectOfType<JumpPlatformSpawner>();
             _meshRenderer = GetComponent<MeshRenderer>();
             _meshRenderer.material.color = _platformData.PlatformType == PlatformType.Rectangle ? Color.red : Color.blue;
@@ -20,7 +20,7 @@ namespace Mryildirim.Core
 
         private void Update()
         {
-            if(transform.position.z < _rocketman.transform.position.z - 30)
+            if(transform.position.z < _rocketmanMovement.transform.position.z - 30)
                 TeleportPlatform();
         }
 
