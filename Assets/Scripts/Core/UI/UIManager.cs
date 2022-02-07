@@ -50,7 +50,7 @@ namespace Mryildirim.UI
         {
             _instructionsText.text = "Tap and Hold then Release";
             
-            while (!Rocketman.IsLaunched)
+            while (!RocketmanMovement.IsLaunched)
             {
                 yield return new WaitForSeconds(0.6f);
                 _handTransform.DOScale(Vector2.one * 0.5f, 0.5f);
@@ -60,7 +60,7 @@ namespace Mryildirim.UI
             
             _instructionsText.text = "Swipe";
             
-            while (!Rocketman.IsFloating)
+            while (!RocketmanMovement.IsFloating)
             {
                 _handTransform.DOMoveX(Screen.width * 1.05f, 1f).SetEase(Ease.InOutSine);
                 yield return new WaitForSeconds(1.1f);
