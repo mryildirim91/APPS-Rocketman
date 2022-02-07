@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2299c80df131df94bb601c7a34999e27, type: 3}
   m_Name: Cylinder Platform
   m_EditorClassIdentifier: 
-  _jumpForce: 300
+  _jumpForce: 275
   _platformType: 1
