@@ -17,7 +17,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &2658018616469410424
 Transform:
@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2658018616469410428}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -250, z: 0}
+  m_LocalPosition: {x: 0, y: -254, z: 0}
   m_LocalScale: {x: 1, y: 250, z: 1}
   m_Children: []
   m_Father: {fileID: 6872318438408168222}
@@ -108,13 +108,13 @@ GameObject:
   - component: {fileID: 6872318438408168221}
   - component: {fileID: 4966791813949569404}
   - component: {fileID: 6872318438408168220}
-  - component: {fileID: 743147044}
+  - component: {fileID: 6789284645171857852}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 4294967295
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &6872318438408168222
 Transform:
@@ -124,7 +124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6872318438408168219}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 25, z: 30}
+  m_LocalPosition: {x: 0, y: 0, z: 30}
   m_LocalScale: {x: 30, y: 0.1, z: 30}
   m_Children:
   - {fileID: 2658018616469410424}
@@ -191,10 +191,10 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 4
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &743147044
+--- !u!114 &6789284645171857852
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -203,7 +203,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6872318438408168219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 15f39eb19a7817f4fbf775291e22a18a, type: 3}
+  m_Script: {fileID: 11500000, guid: 98a0600e96c74e245b5382d9bb5c21e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _platformData: {fileID: 11400000, guid: c194aada353d3974280da2f5dcbd6e87, type: 2}
